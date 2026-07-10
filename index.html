@@ -676,7 +676,7 @@ topicsToggleEl.addEventListener("click", () => setTopicsVisible(topicsWrapEl.sty
 renderChips();
 setTopicsVisible(localStorage.getItem("bvf-topics") !== "hidden");
 
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
 const savedTranslation = localStorage.getItem("bvf-translation");
 const initial = TRANSLATIONS[savedTranslation] ? savedTranslation : "web";
