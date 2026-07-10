@@ -81,6 +81,11 @@
     cursor: pointer; color: var(--ink);
   }
   .hints .chip:hover { background: var(--hl); }
+  .hints .ctrl {
+    display: inline-block; margin-left: 8px; cursor: pointer;
+    color: var(--accent); text-decoration: underline dotted;
+  }
+  .hints .ctrl:hover { color: var(--accent-soft); }
 
   #status { margin: 18px 4px; color: var(--ink-soft); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 0.95rem; }
 
@@ -161,7 +166,9 @@
         </select>
       </label>
     </div>
-    <div class="hints" id="hints">Try a topic:</div>
+    <div class="hints" id="hints">
+      <span id="topics-wrap">Try a topic: <span id="chips"></span><span class="ctrl" id="shuffle" title="Different suggestions">↻ shuffle</span></span><span class="ctrl" id="topics-toggle">hide topics</span>
+    </div>
   </div>
 
   <div id="status">Loading Scripture…</div>
@@ -296,6 +303,8 @@ const THESAURUS = {
   leadership: ["shepherd","ruler","servant","lead","feed"],
   service: ["serve","serveth","servant","minister"],
   hospitality: ["stranger","lodge","entertain","sojourner"],
+  welcome: ["hospitality","stranger","entertain","receive","took me in"],
+  welcoming: ["hospitality","stranger","entertain","receive","took me in"],
   immigration: ["stranger","sojourner","alien","foreigner"],
   animals: ["beast","cattle","sparrow","ox"],
   creation: ["created","made","beginning","formed"],
@@ -621,16 +630,43 @@ resultsEl.addEventListener("click", e => {
   }
 });
 
-// topic chips
-const CHIP_TOPICS = ["forgiveness vs revenge","money and greed","pride comes before a fall","hard work vs laziness",
-  "don't judge others","controlling your anger","worry and anxiety","gossip and slander","helping the poor","patience"];
-const hintsEl = document.getElementById("hints");
-CHIP_TOPICS.forEach(t => {
-  const s = document.createElement("span");
-  s.className = "chip"; s.textContent = t;
-  s.addEventListener("click", () => { queryEl.value = t; run(); });
-  hintsEl.appendChild(s);
-});
+// topic chips: a few anchors always show, the rest are drawn at random from the pool
+const CHIP_ANCHORS = ["forgiveness vs revenge", "money and greed", "pride comes before a fall"];
+const CHIP_POOL = [
+  "hard work vs laziness", "don't judge others", "controlling your anger", "worry and anxiety",
+  "gossip and slander", "helping the poor", "patience", "love your enemies", "the power of words",
+  "telling the truth", "humility over pride", "dealing with grief", "standing up to fear",
+  "true friendship", "jealousy and envy", "gratitude and thanksgiving", "contentment with what you have",
+  "resisting temptation", "obeying authority", "paying taxes", "marriage and love", "raising children",
+  "drinking and self-control", "hypocrisy", "unity over division", "welcoming strangers",
+  "rest and burnout", "debt and lending", "planning for the future", "hope in hard times",
+  "wisdom over foolishness", "making peace", "generosity", "perseverance", "complaining",
+  "trusting God's plan"
+];
+const CHIP_COUNT = 10;
+const chipsEl = document.getElementById("chips");
+const topicsWrapEl = document.getElementById("topics-wrap");
+const topicsToggleEl = document.getElementById("topics-toggle");
+
+function renderChips() {
+  const pick = [...CHIP_POOL].sort(() => Math.random() - 0.5).slice(0, CHIP_COUNT - CHIP_ANCHORS.length);
+  chipsEl.innerHTML = "";
+  for (const t of [...CHIP_ANCHORS, ...pick]) {
+    const s = document.createElement("span");
+    s.className = "chip"; s.textContent = t;
+    s.addEventListener("click", () => { queryEl.value = t; run(); });
+    chipsEl.appendChild(s);
+  }
+}
+function setTopicsVisible(visible) {
+  topicsWrapEl.style.display = visible ? "" : "none";
+  topicsToggleEl.textContent = visible ? "hide topics" : "show topics";
+  localStorage.setItem("bvf-topics", visible ? "shown" : "hidden");
+}
+document.getElementById("shuffle").addEventListener("click", renderChips);
+topicsToggleEl.addEventListener("click", () => setTopicsVisible(topicsWrapEl.style.display === "none"));
+renderChips();
+setTopicsVisible(localStorage.getItem("bvf-topics") !== "hidden");
 
 const savedTranslation = localStorage.getItem("bvf-translation");
 const initial = TRANSLATIONS[savedTranslation] ? savedTranslation : "web";
