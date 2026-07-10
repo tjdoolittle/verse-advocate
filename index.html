@@ -6,6 +6,9 @@
 <title>Verse Advocate — Bible Verse Finder for Arguments</title>
 <meta name="description" content="Describe your argument in plain English and get the Bible verses that best support it. Searches the WEB, KJV, and Tyndale translations entirely in your browser.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8a3324">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
   :root {
     --bg: #f6f2ea;
@@ -133,6 +136,11 @@
     font-family: 'Segoe UI', system-ui, sans-serif; vertical-align: middle;
   }
   .empty { text-align: center; color: var(--ink-soft); padding: 40px 0; font-style: italic; }
+  @media (max-width: 480px) {
+    .searchrow { flex-direction: column; }
+    #go { width: 100%; }
+    header h1 { font-size: 1.7rem; }
+  }
   footer { margin-top: 40px; text-align: center; font-size: 0.8rem; color: var(--ink-soft); font-family: 'Segoe UI', system-ui, sans-serif; }
 </style>
 </head>
@@ -667,6 +675,8 @@ document.getElementById("shuffle").addEventListener("click", renderChips);
 topicsToggleEl.addEventListener("click", () => setTopicsVisible(topicsWrapEl.style.display === "none"));
 renderChips();
 setTopicsVisible(localStorage.getItem("bvf-topics") !== "hidden");
+
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 
 const savedTranslation = localStorage.getItem("bvf-translation");
 const initial = TRANSLATIONS[savedTranslation] ? savedTranslation : "web";
