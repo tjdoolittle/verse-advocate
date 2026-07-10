@@ -527,7 +527,7 @@ function search(qText, testament, limit) {
 }
 
 // ---------- Rendering ----------
-function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 
 function highlight(text, terms) {
   if (!terms.size) return esc(text);
