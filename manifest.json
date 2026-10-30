@@ -1,15 +1,28 @@
 {
   "name": "Verse & Advocate",
   "short_name": "Verse Advocate",
-  "description": "Describe your argument in plain English and get the Bible verses that best support it.",
+  "description": "Say what's on your mind in plain English and find the Bible verses that speak to it.",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
   "background_color": "#f6f2ea",
   "theme_color": "#8a3324",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
